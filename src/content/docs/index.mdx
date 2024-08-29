@@ -1,0 +1,22 @@
+---
+title: Snippet.sh
+description: List of snippets
+template: splash
+hero:
+  tagline: We are still in development!
+  image:
+    file: ../../assets/houston.webp
+  actions:
+    - text: Help us in Github
+      link: https://github.com/sleey/snippet.sh
+      icon: github
+
+---
+
+import { LinkCard, CardGrid } from '@astrojs/starlight/components';
+
+
+<CardGrid>
+  <LinkCard title="Programming" href="/programming/python" />
+  <LinkCard title="Database" href="/database/postgresql" />
+</CardGrid>
