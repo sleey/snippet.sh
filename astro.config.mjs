@@ -6,6 +6,16 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'snippet.sh',
+			head: [
+				{
+				  tag: 'script',
+				  attrs: {
+					src: 'https://stats.sleey.dev/js/script.js',
+					'data-domain': 'snippet.sh',
+					defer: true,
+				  },
+				},
+			  ],
 			social: {
 				github: 'https://github.com/sleey/snippet.sh',
 			},
