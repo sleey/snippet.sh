@@ -19,18 +19,7 @@ export default defineConfig({
 			social: {
 				github: 'https://github.com/sleey/snippet.sh',
 			},
-			sidebar: [
-				{
-					label: 'Programming',
-					collapsed: true,
-					autogenerate: { directory: 'programming', collapsed: true },
-				},
-				{
-					label: 'Database',
-					collapsed: true,
-					autogenerate: { directory: 'database', collapsed: true },
-				},
-			],
+			pagination: false,
 			editLink: {
 				baseUrl: 'https://github.com/sleey/snippet.sh/edit/main/docs/',
 			  },

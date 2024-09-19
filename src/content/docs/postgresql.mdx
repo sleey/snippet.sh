@@ -1,0 +1,103 @@
+---
+title: Postgresql
+description: A postgresql cheat sheet.
+---
+
+## Basic Operations
+
+### Create Table
+:::note
+This page using `users` table as base reference.
+:::
+```sql
+CREATE TABLE users
+(
+    id  INTEGER NOT NULL PRIMARY KEY,
+    username    TEXT NOT NULL,
+    created_at  TIMESTAMP DEFAULT current_timestamp,
+    updated_at  TIMESTAMP
+)
+```
+
+### Alter Table
+```sql
+-- add new column
+ALTER TABLE users
+ADD COLUMN email TEXT NOT NULL;
+
+-- rename column
+ALTER TABLE users
+RENAME COLUMN email TO mail;
+
+-- delete column
+ALTER TABLE users
+DROP COLUMN mail;
+```
+
+### Add Index
+```sql
+CREATE INDEX IF NOT EXISTS user_username_index ON users (username);
+```
+
+### Add Check
+```sql
+ALTER TABLE users
+ADD CONSTRAINT username CHECK (LENGTH(username) >= 3);  -- only allow username length >= 3
+```
+
+### Add Unique
+```sql
+ALTER TABLE users
+ADD CONSTRAINT users_username_unique UNIQUE (username);
+```
+
+### Add Foreign Key
+We have 2 options to add foreign key
+```sql
+-- add foreign key using create
+CREATE TABLE IF NOT EXISTS posts
+(
+    id  INTEGER NOT NULL PRIMARY KEY,
+    title    TEXT NOT NULL,
+    user_id  INTEGER NOT NULL REFERENCES users(id)  -- add foreign key
+)
+
+-- add foreign key using alter
+ALTER TABLE posts
+ADD CONSTRAINT posts_user_id_foreign FOREIGN KEY (user_id) REFERENCES users(id);
+```
+
+### Delete Table
+```sql
+DROP TABLE users;
+```
+
+### Truncate Table
+:::danger
+This will delete all data in table
+:::
+```sql
+TRUNCATE TABLE users;
+```
+
+## Tips and Tricks
+
+### Automate created_at and update_at column
+
+Create function and trigger to automatically update `created_at` and `updated_at` column.
+```sql
+-- create set_timestamp function that will set updated_at column
+CREATE OR REPLACE FUNCTION set_timestamp()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- create trigger for our users table for UPDATE query 
+CREATE TRIGGER set_timestamp
+BEFORE UPDATE ON users
+FOR EACH ROW
+EXECUTE PROCEDURE set_timestamp();
+```
